@@ -39,7 +39,6 @@ async fn handle_dice(ctx: &tbot::contexts::Dice) -> Result<()> {
     } = ctx.dice
     {
         let user = ctx.from.as_ref().context("Dice sent by nobody")?;
-        let member = ctx.get_chat_member(user.id).call().await?;
 
         info!(
             "{} won!",
@@ -47,6 +46,8 @@ async fn handle_dice(ctx: &tbot::contexts::Dice) -> Result<()> {
         );
 
         if ctx.chat.kind.is_supergroup() {
+            let member = ctx.get_chat_member(user.id).call().await?;
+
             tokio::time::delay_for(std::time::Duration::from_secs(30)).await;
 
             match member.status {
