@@ -14,7 +14,7 @@ use tracing::{error, info};
 async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 
-    let mut bot_loop = Bot::new(include_str!("../bot_token.txt").into()).event_loop();
+    let mut bot_loop = Bot::from_env("BOT_TOKEN").event_loop();
 
     bot_loop.dice(|context| async move {
         handle_dice(&context).await.unwrap_or_else(|e| {
