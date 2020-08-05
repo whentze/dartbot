@@ -6,9 +6,9 @@ COPY . .
 
 RUN cargo build --release
 
-FROM debian:slim
+FROM debian:buster-slim
 
-RUN apt-get update && apt-get install -y extra-runtime-dependencies && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libcurl4-openssl-dev libelf-dev libdw-dev binutils-dev && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/src/dartbot/target/release/dartbot /usr/local/bin/dartbot
 
