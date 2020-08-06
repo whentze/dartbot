@@ -10,3 +10,13 @@ Ein Telegram-Bot der erfolgreiches Dartspiel mit 1 Woche Auszeit belohnt
 
 1. `export BOT_TOKEN=123456789:abcdefgh`
 2. `cargo run`
+
+oder 
+
+1. `docker build -t dartbot:latest .`
+2. `docker run -e BOT_TOKEN=123456789:abcdefgh dartbot:latest`
+
+oder (ohne Docker build)
+
+1. `docker run -e BOT_TOKEN=123456789:abcdefgh docker.registry.github.com/whentze/dartbot/dartbot:latest`
+
