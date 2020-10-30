@@ -55,22 +55,32 @@ async fn handle_dice(ctx: &tbot::contexts::Dice) -> Result<()> {
                     ctx.send_message_in_reply("Ich kann Dich zwar nicht muten, aber sei doch bitte so lieb und halt trotzdem eine Woche lang die Fresse.").call().await?;
                 }
                 Status::Member | Status::Restricted { .. } => {
-                    let msg = *[
-                        "Jawollo!",
-                        "Gewinner, Gewinner, Huhn Abendessen!",
-                        "Viel Spaß bei einer Woche Urlaub von RWTH Informatik!",
-                        "endlich",
-                    ]
-                    .choose(&mut thread_rng())
-                    .unwrap();
-
-                    ctx.send_message_in_reply(msg).call().await?;
-
                     let permissions = Permissions::new().can_send_messages(false);
-                    ctx.restrict_chat_member(user.id, permissions)
+                    match ctx.restrict_chat_member(user.id, permissions)
                         .until_date(ctx.date.saturating_add(7 * 24 * 60 * 60))
-                        .call()
-                        .await?;
+                        .call().await {
+                            Err(_e) => {
+                                let msg = *["Gebt mir Admin-Rechte!",
+                                    "Ich hab zwar keine Rechte dich zu Muten, aber sei bitte trotzdem still.",
+                                    "Wann kann ich endlich Leute muten?",
+                                ]
+                                    .choose(&mut thread_rng())
+                                    .unwrap();
+                                ctx.send_message_in_reply(msg).call().await?;
+                            },
+                            Ok(_t) => {
+                                let msg = *[
+                                    "Jawollo!",
+                                    "Gewinner, Gewinner, Huhn Abendessen!",
+                                    "Viel Spaß bei einer Woche Urlaub von RWTH Informatik!",
+                                    "endlich",
+                                ]
+                                    .choose(&mut thread_rng())
+                                    .unwrap();
+                                ctx.send_message_in_reply(msg).call().await?;
+                            }
+                    };
+
                 }
                 Status::Left { .. } => {
                     ctx.send_message_in_reply("Schade dass Du schon weg bist. Ich werde Deinen Gewinn aufbewahren und einlösen, wenn Du uns wieder besuchst!").call().await?;

@@ -1,2 +1,6 @@
 /target
 /bot_token.txt
+.dart_tool/
+.idea/
+.packages
+pubspec.lock
