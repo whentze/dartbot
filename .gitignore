@@ -1,5 +1,2 @@
 /target
 /bot_token.txt
-.idea/
-.packages
-pubspec.lock
